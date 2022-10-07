@@ -59,6 +59,7 @@ function randomSpawnPoint() {
       spawnPoint.x = 0;
       spawnPoint.y = canvasSize * Math.random();
       break;
+      //SANYII
   }
   return spawnPoint;
 }
