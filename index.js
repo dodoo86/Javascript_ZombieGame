@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
 import Victor from "victor";
-import Matter from "matter-js";
+//import Matter from "matter-js";
 
 const canvasSize = 256;
 const canvas = document.getElementById("mycanvas");
