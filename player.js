@@ -13,14 +13,21 @@ export default class Player {
         app.stage.addChild(this.player);
     }
     
+    get position() {
+      return this.player.position;
+    }
+    
+    get width() {
+      return this.player.width;
+    }
+    
     update() {
        const cursorPosition = this.app.renderer.plugins.interaction.mouse.global;
-  let angle =
-    Math.atan2(
-      cursorPosition.y - this.player.position.y,
-      cursorPosition.x - this.player.position.x
-    ) +
+        let angle = Math.atan2(
+          cursorPosition.y - this.player.position.y,
+          cursorPosition.x - this.player.position.x
+        ) +
     Math.PI / 2;
-  this.player.rotation = angle; 
+    this.player.rotation = angle; 
     }
 }

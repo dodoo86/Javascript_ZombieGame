@@ -1,8 +1,10 @@
 import * as PIXI from "pixi.js";
-import Victor from "victor";
+import Player from "./player.js";
+import Zombie from "./zombie.js";
+import Spawner from "./spawner.js";
 //import Matter from "matter-js";
 
-const canvasSize = 256;
+const canvasSize = 512;
 const canvas = document.getElementById("mycanvas");
 const app = new PIXI.Application({
   view: canvas,
@@ -12,55 +14,14 @@ const app = new PIXI.Application({
 });
 
 let player = new Player({app});
+let zSpawner = new Spawner ({create: () => new Zombie({ app, player})});
 
-const enemyRadius = 16;
-const enemySpeed = 2;
-const enemy = new PIXI.Graphics();
-let r = randomSpawnPoint();
-enemy.position.set(r.x, r.y);
-enemy.beginFill(0xff0000, 1);
-enemy.drawCircle(0, 0, enemyRadius);
-enemy.endFill();
-app.stage.addChild(enemy);
+
 
 app.ticker.add((delta) => {
   player.update();
-  /*
-  let e = new Victor(enemy.position.x,enemy.position.y);
-  let s = new Victor(square.position.x,square.position.y);
-  if (e.distance(s) < squareWidth / 2) {
-    let r = randomSpawnPoint();
-    enemy.position.set(r.x, r.y);
-    return;
-  }
-  
-  
-  let d = s.subtract(e);
-  let v = d.normalize().multiplyScalar(enemySpeed);
-  enemy.position.set(enemy.position.x + v.x,enemy.position.y + v.y);
-  */
+  zSpawner.spawns.forEach((zombie) => zombie.update());
 });
 
-function randomSpawnPoint() {
-  let edge = Math.floor(Math.random() * 4);
-  let spawnPoint = new Victor(0, 0);
-  switch (edge) {
-    case 0:
-      spawnPoint.x = canvasSize * Math.random();
-      break;
-    case 1:
-      spawnPoint.x = canvasSize;
-      spawnPoint.y = canvasSize * Math.random();
-      break;
-    case 2:
-      spawnPoint.x = canvasSize * Math.random();
-      spawnPoint.y = canvasSize;
-      break;
-    default:
-      spawnPoint.x = 0;
-      spawnPoint.y = canvasSize * Math.random();
-      break;
-      //SANYII
-  }
-  return spawnPoint;
-}
+
+
