@@ -22,7 +22,7 @@ export default class Shooting {
         this.bullets = this.bullets.filter(
             (b) =>
             Math.abs(b.position.x) < this.app.screen.width &&
-            Math.abs(b.position.y) < this.app.screen.height
+            Math.abs(b.position.y) < this.app.screen.height 
         );
         
         this.bullets.forEach((b) => this.app.stage.addChild(b));
