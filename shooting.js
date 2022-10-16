@@ -8,7 +8,7 @@ export default class Shooting {
         this.bulletSpeed = 4;
         this.bullets = [];
         this.bulletRadius = 8;
-        this.maxBullets = 3;
+        this.maxBullets = 30;
     }
     
     fire() {
