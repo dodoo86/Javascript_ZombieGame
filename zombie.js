@@ -17,14 +17,19 @@ export default class Zombie {
         app.stage.addChild(this.zombie);
     }
     
+    attackPlayer() {
+        if(this.attacking) return;
+        this.attacking = true;
+        this.interval = setInterval(() =>this.player.attack(),500);
+    }
+    
     update(){
         let e = new Victor(this.zombie.position.x,this.zombie.position.y);
         let s = new Victor(this.player.position.x,this.player.position.y);
             if (e.distance(s) < this.player.width / 2) {
-        let r = this.randomSpawnPoint();
-        this.zombie.position.set(r.x, r.y);
-        return;
-        }
+                this.attackPlayer();
+                return;
+                }
   
   
         let d = s.subtract(e);
@@ -34,6 +39,7 @@ export default class Zombie {
     
     kill() {
         this.app.stage.removeChild(this.zombie);
+        clearInterval(this.interval);
     }
     
     get position() {
