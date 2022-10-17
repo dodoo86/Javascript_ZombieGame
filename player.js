@@ -39,7 +39,7 @@ export default class Player {
       this.health -= 1;
       this.healthBar.width = (this.health/this.maxHealth) * this.healthBar.initialWidth;
       if(this.health <= 0) {
-        this.death = true;
+        this.dead = true;
       }
     }
     
@@ -52,6 +52,8 @@ export default class Player {
     }
     
     update() {
+      if (this.dead) return;
+      
       const mouse = this.app.renderer.plugins.interaction.mouse;
       
        const cursorPosition = mouse.global;
