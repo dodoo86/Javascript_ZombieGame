@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import Victor from "victor";
+import {zombies} from "./globals.js";
 
 export default class Zombie {
     constructor({app,player}){
@@ -8,12 +9,15 @@ export default class Zombie {
         
         const radius = 16;
         this.speed = 1;
-        this.zombie = new PIXI.Graphics();
+        //this.zombie = new PIXI.Graphics();
         let r = this.randomSpawnPoint();
+        
+        let zombieName = zombies[Math.floor(Math.random()*zombies.length)];
+        
         this.zombie.position.set(r.x, r.y);
-        this.zombie.beginFill(0xff0000, 1);
-        this.zombie.drawCircle(0, 0, radius);
-        this.zombie.endFill();
+        //this.zombie.beginFill(0xff0000, 1);
+        //this.zombie.drawCircle(0, 0, radius);
+        //this.zombie.endFill();
         app.stage.addChild(this.zombie);
     }
     

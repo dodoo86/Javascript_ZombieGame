@@ -5,14 +5,17 @@ import Spawner from "./spawner.js";
 import {zombies} from "./globals.js";
 //import Matter from "matter-js";
 
-const canvasSize = 800;
+const canvasSize = 512;
 const canvas = document.getElementById("mycanvas");
 const app = new PIXI.Application({
   view: canvas,
   width: canvasSize,
   height: canvasSize,
-  backgroundColor: 0x5c812f
+  backgroundColor: 0x312a2b,
+  resolution: 2
 });
+
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 initGame();
 
@@ -85,6 +88,7 @@ async function loadAssets() {
     zombies.forEach((z) => PIXI.Loader.shared.add(`assets/${z}.json`));
     PIXI.Loader.shared.add("assets/hero_male.json");
     PIXI.Loader.shared.add("bullet", "assets/bullet.png");
+    //PIXI.Loader.shared.add("assets/Sidle.json");
     PIXI.Loader.shared.onComplete.add(resolve);
     PIXI.Loader.shared.onError.add(reject);
     PIXI.Loader.shared.load();
