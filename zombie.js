@@ -7,17 +7,20 @@ export default class Zombie {
         this.app = app;
         this.player = player;
         
-        const radius = 16;
+       
         this.speed = 1;
-        //this.zombie = new PIXI.Graphics();
         let r = this.randomSpawnPoint();
         
         let zombieName = zombies[Math.floor(Math.random()*zombies.length)];
+        this.speed = zombieName === "quickzee" ? 1 : 0.25;
+        let sheet = PIXI.Loader.shared.resources[`assets/${zombieName}.json`].spritesheet;
         
-        this.zombie.position.set(r.x, r.y);
-        //this.zombie.beginFill(0xff0000, 1);
-        //this.zombie.drawCircle(0, 0, radius);
-        //this.zombie.endFill();
+        this.die = new PIXI.AnimatedSprite(sheet.animations["die"]);
+        this.attack = new PIXI.AnimatedSprite(sheet.animations["attack"]);
+        this.zombie = new PIXI.AnimatedSprite(sheet.animations["walk"]);
+        this.zombie.animationSpeed = zombieName === "quickzee" ? 0.2 : 0.1;
+        this.zombie.play();
+        this.zombie.anchor.set(0.5);this.zombie.position.set(r.x, r.y);
         app.stage.addChild(this.zombie);
     }
     
