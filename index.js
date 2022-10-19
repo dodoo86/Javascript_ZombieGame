@@ -2,8 +2,9 @@ import * as PIXI from "pixi.js";
 import Player from "./player.js";
 import Zombie from "./zombie.js";
 import Spawner from "./spawner.js";
-import { zombies } from "./globals.js";
+import { textStyle, zombies, subTextStyle } from "./globals.js";
 import Weather from "./weather.js";
+import GameState from "./game-state.js";
 
 const canvasSize = 512;
 const canvas = document.getElementById("mycanvas");
@@ -20,6 +21,7 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 initGame();
 
 async function initGame() {
+  app.gameState = GameState.PREINTRO;
   try {
     console.log("Loading...");
     await loadAssets();
@@ -32,23 +34,38 @@ async function initGame() {
       app,
       create: () => new Zombie({ app, player })
     });
-
-    let gameStartScene = createScene("Click to Start");
-    let gameOverScene = createScene("Game Over");
-    app.gameStarted = false;
+    
+    let gamePreIntroScene = createScene("SquirrelZee","Click to Continue");
+    let gameStartScene = createScene("SquirrelZee","Click to Start");
+    let gameOverScene = createScene("SquirrelZee","Game Over");
 
     app.ticker.add((delta) => {
-      gameOverScene.visible = player.dead;
-      gameStartScene.visible = !app.gameStarted;
-      if (app.gameStarted === false) return;
-      player.update(delta);
-      zSpawner.spawns.forEach((zombie) => zombie.update(delta));
-      bulletHitTest({
-        bullets: player.shooting.bullets,
-        zombies: zSpawner.spawns,
-        bulletRadius: 8,
-        zombieRadius: 16
-      });
+      if(player.dead) app.gameState = GameState.GAMEOVER;
+      gamePreIntroScene.visible = app.gameState === GameState.PREINTRO;
+      gameStartScene.visible = app.gameState === GameState.START;
+      gameOverScene.visible = app.gameState === GameState.GAMEOVER;
+      
+      switch(app.gameState) {
+        case GameState.PREINTRO:
+        player.scale = 4;
+        break;
+        case GameState.INTRO:
+        player.scale -= 0.01;
+        if(player.scale <= 1) app.gameState = GameState.START;
+        break;
+        case GameState.RUNNING:
+        player.update(delta);
+        zSpawner.spawns.forEach((zombie) => zombie.update(delta));
+        bulletHitTest({
+          bullets: player.shooting.bullets,
+          zombies: zSpawner.spawns,
+          bulletRadius: 8,
+          zombieRadius: 16
+          });
+        break;
+        default:
+        break;
+      }
     });
   } catch (error) {
     console.log(error.message);
@@ -70,22 +87,31 @@ function bulletHitTest({ bullets, zombies, bulletRadius, zombieRadius }) {
   });
 }
 
-function createScene(sceneText) {
+function createScene(sceneText, sceneSubText) {
   const sceneContainer = new PIXI.Container();
-  const text = new PIXI.Text(sceneText);
+  const text = new PIXI.Text(sceneText, new PIXI.TextStyle(textStyle));
   text.x = app.screen.width / 2;
-  text.y = 0;
+  text.y = 20;
   text.anchor.set(0.5, 0);
+  
+  const subText = new PIXI.Text(sceneSubText, new PIXI.TextStyle(subTextStyle));
+  subText.x = app.screen.width / 2;
+  subText.y = 150;
+  subText.anchor.set(0.5, 0);
+  
   sceneContainer.zIndex = 1;
   sceneContainer.addChild(text);
+  sceneContainer.addChild(subText);
   app.stage.addChild(sceneContainer);
   return sceneContainer;
 }
 
+/*
 function startGame() {
   app.gameStarted = true;
   app.weather.enableSound();
 }
+*/
 
 async function loadAssets() {
   return new Promise((resolve, reject) => {
@@ -100,4 +126,19 @@ async function loadAssets() {
   });
 }
 
-document.addEventListener("click", startGame);
+function clickHandler() {
+  switch (app.gameState) {
+    case GameState.PREINTRO:
+    app.gameState = GameState.INTRO;
+    //music.Play();
+    break;
+    case GameState.START:
+    app.gameState = GameState.RUNNING;
+    //zombieHorde.Play();
+    break;
+    default:
+    break;
+  }
+}
+
+document.addEventListener("click", clickHandler);
