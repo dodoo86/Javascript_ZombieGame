@@ -6,6 +6,7 @@ import { textStyle, zombies, subTextStyle } from "./globals.js";
 import Weather from "./weather.js";
 import GameState from "./game-state.js";
 
+
 const canvasSize = 512;
 const canvas = document.getElementById("mycanvas");
 const app = new PIXI.Application({
@@ -37,6 +38,15 @@ zombieHorde.addEventListener("timeupdate", function() {
   
 initGame();
 
+let value = 0;
+
+function increment() {
+  value += 1;
+  return value;
+}
+
+//increment();
+
 async function initGame() {
   app.gameState = GameState.PREINTRO;
   try {
@@ -55,12 +65,14 @@ async function initGame() {
     let gamePreIntroScene = createScene("SquirrelZee","Click to Continue");
     let gameStartScene = createScene("SquirrelZee","Click to Start");
     let gameOverScene = createScene("SquirrelZee","Game Over");
+    //let gameRunScene = createScene(value);
 
     app.ticker.add((delta) => {
       if(player.dead) app.gameState = GameState.GAMEOVER;
       gamePreIntroScene.visible = app.gameState === GameState.PREINTRO;
       gameStartScene.visible = app.gameState === GameState.START;
       gameOverScene.visible = app.gameState === GameState.GAMEOVER;
+      //gameRunScene.visible = app.gameState === GameState.RUNNING;
       
       switch(app.gameState) {
         case GameState.PREINTRO:
@@ -90,6 +102,7 @@ async function initGame() {
   }
 }
 
+
 function bulletHitTest({ bullets, zombies, bulletRadius, zombieRadius }) {
   bullets.forEach((bullet) => {
     zombies.forEach((zombie, index) => {
@@ -99,6 +112,13 @@ function bulletHitTest({ bullets, zombies, bulletRadius, zombieRadius }) {
       if (distance < bulletRadius + zombieRadius) {
         zombies.splice(index, 1);
         zombie.kill();
+        increment();
+          let gameRunScene = createScene(value);
+          gameRunScene.visible = 1;//app.gameState === GameState.RUNNING;
+          dela
+          gameRunScene.visible = 0;
+          DelayNode = 1;
+          gameRunScene.visible = 1;
       }
     });
   });
@@ -122,6 +142,7 @@ function createScene(sceneText, sceneSubText) {
   app.stage.addChild(sceneContainer);
   return sceneContainer;
 }
+
 
 /*
 function startGame() {
@@ -160,3 +181,4 @@ function clickHandler() {
 }
 
 document.addEventListener("click", clickHandler);
+
