@@ -115,10 +115,6 @@ function bulletHitTest({ bullets, zombies, bulletRadius, zombieRadius }) {
         increment();
           let gameRunScene = createScene(value);
           gameRunScene.visible = 1;//app.gameState === GameState.RUNNING;
-          dela
-          gameRunScene.visible = 0;
-          DelayNode = 1;
-          gameRunScene.visible = 1;
       }
     });
   });
