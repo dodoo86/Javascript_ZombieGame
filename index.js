@@ -40,7 +40,7 @@ zombieHorde.addEventListener("timeupdate", function() {
   
 initGame();
 
-let value = 1;
+let value = 0;
 
 function increment() {
   value += 1;
