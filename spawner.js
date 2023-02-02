@@ -3,8 +3,8 @@ import GameState from "./game-state";
 export default class Spawner {
     constructor({app, create}) {
         this.app = app;
-        const spawnInterval = 1000; //in ms
-        this.maxSpawns = 10;
+        const spawnInterval = 10; //in ms
+        this.maxSpawns = 1000;
         this.create = create;
         this.spawns = [];
         setInterval(() => this.spawn(),spawnInterval);
