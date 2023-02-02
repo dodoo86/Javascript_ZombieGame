@@ -5,8 +5,8 @@ export default class Spawner {
     constructor({app, create}) {
         this.app = app;
         Index.value;
-        const spawnInterval = 500; //in ms
-        this.maxSpawns = Index.value * 10;
+        const spawnInterval = 400; //in ms
+        this.maxSpawns =  10 * Index.value;
         
         this.create = create;
         this.spawns = [];
