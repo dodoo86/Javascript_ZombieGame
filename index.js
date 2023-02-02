@@ -6,7 +6,9 @@ import { textStyle, zombies, subTextStyle } from "./globals.js";
 import Weather from "./weather.js";
 import GameState from "./game-state.js";
 
-
+export default class Index {
+  
+}
 const canvasSize = 512;
 const canvas = document.getElementById("mycanvas");
 const app = new PIXI.Application({
@@ -38,7 +40,7 @@ zombieHorde.addEventListener("timeupdate", function() {
   
 initGame();
 
-let value = 0;
+let value = 1;
 
 function increment() {
   value += 1;
