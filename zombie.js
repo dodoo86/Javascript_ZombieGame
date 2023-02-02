@@ -8,7 +8,7 @@ export default class Zombie {
         this.player = player;
         
        
-        this.speed = 100;
+        this.speed = 1000;
         let r = this.randomSpawnPoint();
         
         let zombieName = zombies[Math.floor(Math.random()*zombies.length)];
